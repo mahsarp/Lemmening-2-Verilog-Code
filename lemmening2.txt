@@ -1,0 +1,77 @@
+module top_module(
+    input clk,
+    input areset,     Freshly brainwashed Lemmings walk left.
+    input bump_left,
+    input bump_right,
+    input ground,
+    output walk_left,
+    output walk_right,
+    output aaah ); 
+parameter L=2'b00, R=2'b01, F_L=2'b10, F_R=2'b11;
+    reg[10] state, next_state;
+    
+    always @()
+        begin
+        next_state=state;
+            case(state)
+                L begin
+                    if(bump_left && ground)
+                    next_state=R;
+                    else if( ~bump_left && ground)
+                        next_state=L;
+                    else if(~ground)
+                        next_state=F_L;
+                end  
+             R
+                 begin
+                     if(bump_right && ground)
+                         next_state=L;
+                     else if(~bump_left && ground)
+                         next_state=R;
+                     else if(~ground)
+                         next_state=F_R;
+                 end
+             F_L
+                 begin
+                     if(~ground)
+                      next_state=F_L;
+                   else
+                     next_state=L; 
+                 end    
+             F_R 
+                      if(~ground)
+                      next_state=F_R;
+                   else
+                     next_state=R;  
+                     
+            endcase
+        end    
+                
+                
+    always @(posedge clk, posedge areset)
+                    begin
+                        if(areset)
+                         state=L;
+                        else
+                         state=next_state;   
+                    end    
+    
+                
+    assign walk_left=(state==L)1'b11'b0;
+    assign walk_right=(state==R)1'b11'b0;
+    assign aaah=(state== F_L  state==F_R)1'b11'b0;
+                
+endmodule
+
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
